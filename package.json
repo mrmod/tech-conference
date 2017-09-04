@@ -1,0 +1,22 @@
+{
+  "name": "tech-conference",
+  "version": "0.0.1",
+  "description": "Find tech conferences happening",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/mrmod/tech-conference"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "got": "^7.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.6.1",
+    "jest": "^21.0.0"
+  }
+}
