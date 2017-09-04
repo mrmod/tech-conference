@@ -5,9 +5,9 @@ const apiKey = 'f97710e53bb940988a73c69e45d1ff42'
 const searchUrl = 'https://api.cognitive.microsoft.com/bing/v5.0/search'
 const localIP = '67.169.49.159'
 const limit = 10
-const techConferences  = [
-  // 'javascript', 'angular', 'react', 'reactjs', 'redux',
-  // 'ai', 'artificial intelligence', 'bayes', 'neural network',
+const techConferences = [
+  'javascript', 'angular', 'react', 'reactjs', 'redux',
+  'ai', 'artificial intelligence', 'bayes', 'neural network',
   'machine learning', 'chatbot', 'bot',
 
 ]
@@ -21,7 +21,7 @@ const search = (term, offset) => {
     headers: {
       'Ocp-Apim-Subscription-Key': apiKey,
       'X-Search-ClientIp': localIP,
-    }
+    },
   }
   const query = `q=${term}&mkt=en-us&count=${limit}&offset=${offset}`
   return got(`${searchUrl}?${query}`, bingOptions)
@@ -29,9 +29,14 @@ const search = (term, offset) => {
   .catch((err) => console.log('ERROR:', err))
 }
 
-const snippets = (searchResponse) => searchResponse.webPages.value.forEach(showSnippet)
+const snippets = (searchResponse) => searchResponse.webPages.value
+.forEach(showSnippet)
 
-const urlSet = (searchResponse) => searchResponse.webPages.value.map(selectHostname)
+const webPages = (searchResponse) => searchResponse.webPages.value
+
+// eslint-disable-next-line no-unused-vars
+const urlSet = (searchResponse) => searchResponse.webPages.value
+.map(selectHostname)
 
 const selectHostname = (pageUrl) => url.parse(pageUrl).hostname
 
@@ -45,6 +50,15 @@ const showTechConferences = () => techConferences.map((t) => {
 })
 
 const fetchConferenceTopic = (topic) => search(`${topic} conference`)
+.then(webPages)
+.then((pages) => Object.assign({}, {topic: topic, pages: pages}))
+
+// FetchTopics Creates a UI worthy response
+// eslint-disable-next-line no-unused-vars
+const fetchTopics = (topics) => Promise.all(
+  topics.map(fetchConferenceTopic)
+)
+.then((results) => Object.assign({}, {topics: results}))
 
 // TODO: Give the UI a struct like
 /*
